@@ -1,5 +1,4 @@
 
-import { Typography } from 'antd';
 import '../App.scss'
 import ListProjects from '../components/ListProjects';
 import { CreateProjects } from '../components/CreateProjects';
@@ -7,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { fetchProjects } from '../services/api';
 // import { useSelector } from 'react-redux';
 // import { RootState } from '../redux/store';
-const {Text} = Typography;
 
 type ProjectProps = {
         id: number,
@@ -33,7 +31,6 @@ function HomePage() {
     <>
     <div className=''>
       <CreateProjects />
-      <Text>Project</Text>
       <ListProjects projects={projects} />
     </div>
     </>
