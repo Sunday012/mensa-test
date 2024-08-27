@@ -2,7 +2,6 @@
   "name": "mensa-pro",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://mensa-test.vercel.app",
   "type": "module",
   "scripts": {
     "dev": "vite",
