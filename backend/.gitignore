@@ -1,0 +1,16 @@
+# Node modules
+node_modules
+
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Ignore Mac system files
+.DS_Store
+
+# Ignore other system files
+Thumbs.db
