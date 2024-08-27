@@ -1,6 +1,7 @@
 
 import { Link } from 'react-router-dom';
 import { CardPre } from './Card';
+import "../App.scss"
 
 interface Project {
     id: number;
@@ -15,7 +16,7 @@ interface Project {
 export default function ListProjects({projects} : ProjectListProps) {
 
   return (
-  <div>
+  <div className='project-box'>
     {projects.map((project) => (
       <Link to={`/project/${project.id}`} key={project.id}>
       <CardPre project={project}/>
