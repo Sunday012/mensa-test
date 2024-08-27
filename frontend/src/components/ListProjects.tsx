@@ -1,6 +1,8 @@
 
 import { List} from 'antd';
 import { Link } from 'react-router-dom';
+import { DeleteProject } from './DeleteBtn';
+import { EditBtn } from './EditBtn';
 
 interface Project {
     id: number;
@@ -13,6 +15,7 @@ interface Project {
   }
 
 export default function ListProjects({projects} : ProjectListProps) {
+
   return (
     <List
     itemLayout="horizontal"
@@ -23,6 +26,8 @@ export default function ListProjects({projects} : ProjectListProps) {
           title={<Link to={`/project/${project.id}`}>{project.name}</Link>}
           description={project.description}
         />
+        <EditBtn project={project} type='project' />
+        <DeleteProject id={project.id} type='project' />
       </List.Item>
     )}
   />

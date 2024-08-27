@@ -1,0 +1,150 @@
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
+const apiUrl = "http://localhost:5000"
+
+type TypedueDate = {
+    $d: string
+}
+export interface ProjectDetails {
+    id?: number;
+    name: string;
+    description: string;
+    dueDate: TypedueDate;
+  }
+export interface TaskDetails {
+    id?: number;
+    name: string;
+    description: string;
+    status: 'todo' | 'in_progress' | 'done';
+  }
+
+  export interface Project {
+    values: ProjectDetails;
+  }
+
+  export interface Task {
+    values: TaskDetails;
+  }
+
+export const fetchProjects = async () => {
+    try {
+        const response = await axios.get(`${apiUrl}/projects`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error({"Error fetching projects" : error});
+    }
+}
+export const fetchTasks = async () => {
+    try {
+        const response = await axios.get(`${apiUrl}/tasks`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error({"Error fetching tasks" : error});
+    }
+}
+
+export const fetchProject = async () => {
+    const {id} = useParams<{id : string}>()
+    try {
+        const response = await axios.get(`${apiUrl}/projects?${id}`)
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error({"Error fetching projects" : error});
+    }
+}
+export const fetchTask = async (id : string | undefined) => {
+    try {
+        const response = await axios.get(`${apiUrl}/tasks/${id}`)
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error({"Error fetching projects" : error});
+    }
+}
+
+export const createProject = async ({values} : Project) => {
+    console.log(values.dueDate.$d)
+    const dueDate = new Date(values.dueDate.$d).toISOString().slice(0, 10);
+    try {
+        const response = await axios.post(`${apiUrl}/projects`, {
+            name: values.name,
+            description: values.description,
+            due_date: dueDate,
+        });
+        return response.data;
+    } catch (error) {
+        console.error({"Error fetching projects" : error});
+    }
+}
+export const createTask = async ({data} : any) => {
+    try {
+        const response = await axios.post(`${apiUrl}/tasks`, {
+            name: data.name,
+            description: data.description,
+            status: 'todo',
+            project_id: data.id,
+        });
+        return response.data;
+    } catch (error) {
+        console.error({"Error creating Task" : error});
+    }
+}
+
+export const updateProject = async ({values} : Project) => {
+    console.log(values.id)
+    const dueDate = new Date(values.dueDate.$d).toISOString().slice(0, 10);
+    try {
+        const response = await axios.put(`${apiUrl}/projects/${values.id}`, {
+            name: values.name,
+            description: values.description,
+            due_date: dueDate,
+        });
+        return response.data;
+    } catch (error) {
+        console.error({"Error fetching projects" : error});
+    }
+}
+export const updateTask = async ({values} : Task) => {
+    try {
+        const response = await axios.put(`${apiUrl}/tasks/${values.id}`, {
+            name: values.name,
+            description: values.description,
+            status: values.status,
+        });
+        return response.data;
+    } catch (error) {
+        console.error({"Error updating task" : error});
+    }
+}
+
+
+export const deleteProject = async (id : number) => {
+    try {
+        const response = await axios.delete(`${apiUrl}/projects/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error({"Error fetching projects" : error});
+    }
+}
+export const deleteTask = async (id : number) => {
+    try {
+        const response = await axios.delete(`${apiUrl}/tasks/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error({"Error fetching projects" : error});
+    }
+}
