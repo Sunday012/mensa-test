@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from 'js-cookie';
 import { useParams } from "react-router-dom";
 
-const apiUrl = "http://localhost:5000"
+const apiUrl = "https://mensa-test-backend.vercel.app"
 
 type TypedueDate = {
     $d: string

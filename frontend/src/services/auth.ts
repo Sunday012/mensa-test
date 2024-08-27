@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from 'js-cookie';
 // import { useDispatch } from 'react-redux';
 // import { setToken, clearToken } from '../redux/slices/authSlice';
-const apiUrl = "http://localhost:5000"
+const apiUrl = "https://mensa-test-backend.vercel.app"
 
 type UserProfile = {
     username?: string,
