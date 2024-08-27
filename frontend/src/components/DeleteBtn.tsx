@@ -9,6 +9,7 @@ type DeleteProps = {
   type: string;
 }
 export const DeleteProject = ({id, type} : DeleteProps) => {
+  //@ts-ignore
   const [size, setSize] = useState<SizeType>('large');
   const [loadings, setLoadings] = useState<boolean[]>([]);
   const handleDelete = () => {

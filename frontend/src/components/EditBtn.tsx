@@ -1,8 +1,7 @@
 import { EditOutlined } from '@ant-design/icons'
-import { Button, ConfigProviderProps, DatePicker, Form, Input, Modal, Select, Space } from 'antd'
-import React, { useState } from 'react'
+import { Button, ConfigProviderProps, DatePicker, Form, Input, Modal, Select } from 'antd'
+import { useState } from 'react'
 import { updateProject, updateTask} from '../services/api';
-import { useParams } from 'react-router-dom';
 
 type SizeType = ConfigProviderProps['componentSize'];
 type ProjectProps = {
@@ -54,7 +53,9 @@ export const EditBtn = ({project, type} : ProjectProps) => {
         setOpen(false);
       };
 
+    //@ts-ignore
     const [size, setSize] = useState<SizeType>('large');
+    //@ts-ignore
     const [loadings, setLoadings] = useState<boolean[]>([]);
     const handleEdit = () => {
         showModal()
