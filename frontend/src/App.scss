@@ -40,3 +40,14 @@
 .read-the-docs {
   color: #888;
 }
+
+$primary-color: #3498db;
+
+.app-container {
+  background-color: $primary-color;
+  color: white;
+
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+}
