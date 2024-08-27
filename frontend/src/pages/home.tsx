@@ -4,6 +4,7 @@ import ListProjects from '../components/ListProjects';
 import { CreateProjects } from '../components/CreateProjects';
 import { useEffect, useState } from 'react';
 import { fetchProjects } from '../services/api';
+import Cookies from 'js-cookie';
 // import { useSelector } from 'react-redux';
 // import { RootState } from '../redux/store';
 
@@ -16,7 +17,7 @@ type ProjectProps = {
 }
 function HomePage() {
     const [projects, setProjects] = useState<ProjectProps[]>([])
-    // const token = useSelector((state: RootState) => state.auth.token);
+    const token = Cookies.get('token')
     useEffect(() => {
         const fetchAllProjects = async () => {
             const result = await fetchProjects();
@@ -24,7 +25,9 @@ function HomePage() {
             console.log(result);
         }
 
+        if(token){
             fetchAllProjects()
+        }
     },[])
 
   return (

@@ -10,13 +10,19 @@ export const Header = () => {
       const token = Cookies.get('token');
       setToken(token);
     },[])
+
+    const Logout = () => {
+        Cookies.remove('token');
+        setToken(undefined);
+    }
+    
   return (
     <div className="box-container">
         <h1 className="header-text">Mensa Test</h1>
         {usertoken ? (
             <div className="auth-container">
-          <Button>
-              <Link to="/logout">Logout</Link>
+          <Button onClick={() => Logout()}>
+              Logout
           </Button>
         <FilterProjects />
             </div>
