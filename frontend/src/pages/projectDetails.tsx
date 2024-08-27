@@ -28,8 +28,8 @@ export default function ProjectDetails() {
   return (
     <div>
     <Text>Project Details</Text>
-    <ListTasks task={task} />
     <CreateTask />
+    <ListTasks task={task} />
   </div>
   )
 }
