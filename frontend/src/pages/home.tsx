@@ -5,6 +5,8 @@ import ListProjects from '../components/ListProjects';
 import { CreateProjects } from '../components/CreateProjects';
 import { useEffect, useState } from 'react';
 import { fetchProjects } from '../services/api';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../redux/store';
 const {Text} = Typography;
 
 type ProjectProps = {
@@ -16,6 +18,7 @@ type ProjectProps = {
 }
 function HomePage() {
     const [projects, setProjects] = useState<ProjectProps[]>([])
+    // const token = useSelector((state: RootState) => state.auth.token);
     useEffect(() => {
         const fetchAllProjects = async () => {
             const result = await fetchProjects();
@@ -23,7 +26,7 @@ function HomePage() {
             console.log(result);
         }
 
-        fetchAllProjects()
+            fetchAllProjects()
     },[])
 
   return (

@@ -1,14 +1,75 @@
 require('dotenv').config();
 const express = require('express')
 const cors = require('cors');
+const bcrypt = require('bcryptjs')
 const bodyParser = require('body-parser')
 const pool = require('./db')
 const app = express();
+const jwt = require('jsonwebtoken')
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/projects", async (req, res) => {
+const JWT_SECRET = process.env.JWT_SECRET;
+app.post('/signup', async (req, res) => {
+  const { username, email, password } = req.body;
+  if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+  }
+  try {
+      const [existingUser] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+      if (existingUser.length > 0) {
+          return res.status(400).json({ message: 'Email already exist' });
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await pool.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username,email, hashedPassword]);
+
+      res.status(201).json({ message: 'User created successfully' });
+  } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+  }
+  try {
+      const [user] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+      if (user.length === 0) {
+          return res.status(400).json({ message: 'Invalid username or password' });
+      }
+      const isMatch = await bcrypt.compare(password, user[0].password);
+      if (!isMatch) {
+          return res.status(400).json({ message: 'Invalid username or password' });
+      }
+      const token = jwt.sign({ id: user[0].id, username: user[0].username }, JWT_SECRET, { expiresIn: '1h' });
+      res.json({ token });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+  }
+});
+
+const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization'];
+
+  if (!token) {
+      return res.status(401).json({ message: 'Access denied' });
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, user) => {
+      if (err) {
+          return res.status(403).json({ message: 'Invalid token' });
+      }
+      req.user = user;
+      next();
+  });
+};
+
+app.get("/projects", authenticateToken, async (req, res) => {
   try {
     const [result] = await pool.query("SELECT * FROM projects");
     res.json(result);
@@ -18,7 +79,7 @@ app.get("/projects", async (req, res) => {
   }
 });
 
-app.get("/tasks", async (req, res) => {
+app.get("/tasks", authenticateToken, async (req, res) => {
   try {
     const [result] = await pool.query("SELECT * FROM tasks");
     res.json(result);
@@ -28,7 +89,7 @@ app.get("/tasks", async (req, res) => {
   }
 });
 
-app.get('/projects:id', async (req, res) => {
+app.get('/projects:id', authenticateToken, async (req, res) => {
   const {id} = req.params;
   try {
     const [result] = await pool.query("SELECT * FROM projects WHERE id = ?", [id]);
@@ -39,7 +100,8 @@ app.get('/projects:id', async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-app.get('/tasks/:id', async (req, res) => {
+
+app.get('/tasks/:id', authenticateToken, async (req, res) => {
   const {id} = req.params;
   try {
     const [result] = await pool.query("SELECT * FROM tasks WHERE project_id = ?", [id]);
@@ -51,7 +113,7 @@ app.get('/tasks/:id', async (req, res) => {
   }
 });
 
-app.post('/projects', async (req, res) => {
+app.post('/projects', authenticateToken, async (req, res) => {
   const { name, description, due_date } = req.body;
   try {
     const [result] = await pool.query(
@@ -65,7 +127,7 @@ app.post('/projects', async (req, res) => {
   }
 });
 
-app.post('/tasks', async (req, res) => {
+app.post('/tasks', authenticateToken, async (req, res) => {
   const { name, description, status, project_id } = req.body;
   try {
     const [result] = await pool.query(
@@ -79,7 +141,7 @@ app.post('/tasks', async (req, res) => {
   }
 });
 
-app.put('/projects/:id', async (req, res) => {
+app.put('/projects/:id', authenticateToken, async (req, res) => {
   const {id} = req.params;
   const {name, description, due_date} = req.body;
   try {
@@ -93,7 +155,7 @@ app.put('/projects/:id', async (req, res) => {
       res.status(500).json({ message: 'Error updating project', error });
     }
 });
-app.put('/tasks/:id', async (req, res) => {
+app.put('/tasks/:id', authenticateToken, async (req, res) => {
   const {id} = req.params;
   const {name, description, status} = req.body;
   try {
@@ -108,7 +170,7 @@ app.put('/tasks/:id', async (req, res) => {
     }
 });
 
-app.delete('/projects/:id', async (req, res) => {
+app.delete('/projects/:id',authenticateToken, async (req, res) => {
   try {
     await pool.query('DELETE FROM tasks WHERE project_id = ?', [req.params.id]);
     await pool.query('DELETE FROM projects WHERE id = ?', [req.params.id]);
@@ -118,7 +180,7 @@ app.delete('/projects/:id', async (req, res) => {
     res.status(500).json({ message: 'Error deleting project', error });
   }
 });
-app.delete('/tasks/:id', async (req, res) => {
+app.delete('/tasks/:id', authenticateToken, async (req, res) => {
   try {
     await pool.query('DELETE FROM tasks WHERE id = ?', [req.params.id]);
     res.json({ message: 'tasks deleted successfully' });
