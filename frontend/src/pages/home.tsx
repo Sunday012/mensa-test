@@ -15,7 +15,6 @@ function HomePage() {
       <Text>Project</Text>
       <ListProjects projects={mockProjects} />
       <CreateProjects />
-      <p>Hello</p>
     </div>
     </>
   )
