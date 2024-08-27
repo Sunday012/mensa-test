@@ -196,3 +196,35 @@ export const deleteTask = async (id : number) => {
         console.error({"Error fetching projects" : error});
     }
 }
+
+export const filterProjects = async (filters : any) => {
+    try {
+        const token = Cookies.get('token');
+        if (!token) {
+          throw new Error('No token found');
+        }
+         const queryParams = new URLSearchParams();
+    
+        if (filters.name) {
+          queryParams.append('name', filters.name);
+        }
+        if (filters.dueDate) {
+          queryParams.append('dueDate', filters.dueDate);
+        }
+        if (filters.numTasks !== undefined) {
+          queryParams.append('numTasks', filters.numTasks.toString());
+        }
+    
+        const response = await axios.get(`${apiUrl}/projects`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: queryParams,
+        });
+    
+        return response.data;
+      } catch (error) {
+        console.error("Error filtering projects:", error);
+        throw error;
+      }
+}

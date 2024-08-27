@@ -113,6 +113,39 @@ app.get('/tasks/:id', authenticateToken, async (req, res) => {
   }
 });
 
+app.get('/projects', authenticateToken, async (req, res) => {
+  const { name, dueDate, numTasks } = req.query;
+
+  try {
+    let query = 'SELECT p.*, (SELECT COUNT(*) FROM tasks WHERE project_id = p.id) AS task_count FROM projects p';
+    let queryParams = [];
+    let whereClauses = [];
+
+    if (name) {
+      whereClauses.push('p.name LIKE ?');
+      queryParams.push(`%${name}%`);
+    }
+    if (dueDate) {
+      whereClauses.push('p.due_date = ?');
+      queryParams.push(dueDate);
+    }
+    if (numTasks) {
+      whereClauses.push('(SELECT COUNT(*) FROM tasks WHERE project_id = p.id) >= ?');
+      queryParams.push(parseInt(numTasks, 10));
+    }
+
+    if (whereClauses.length > 0) {
+      query += ' WHERE ' + whereClauses.join(' AND ');
+    }
+
+    const [result] = await pool.query(query, queryParams);
+    res.json(result);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 app.post('/projects', authenticateToken, async (req, res) => {
   const { name, description, due_date } = req.body;
   try {

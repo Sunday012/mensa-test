@@ -23,7 +23,7 @@ export const EditBtn = ({project, type} : ProjectProps) => {
         setTimeout(() => {
           setOpen(false);
           setConfirmLoading(false);
-        }, 2000);
+        }, 5000);
       };
 
     const onFinish = (data: any) => {
