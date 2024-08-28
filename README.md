@@ -1,5 +1,5 @@
 # Mensa Pro
-## Mensa Pro is a powerful and intuitive project management application designed to help teams collaborate effectively, manage tasks, and achieve their goals. Whether you're working on a small project or managing a large team, Mensa Pro provides the tools you need to stay organized and productive.
+### Mensa Pro is a powerful and intuitive project management application designed to help teams collaborate effectively, manage tasks, and achieve their goals. Whether you're working on a small project or managing a large team, Mensa Pro provides the tools you need to stay organized and productive.
 
 Table of Contents
 
@@ -130,19 +130,31 @@ Technologies
 Mensa Pro is built using the following technologies:
 
 Frontend: React, TypeScript, Ant Design, Vite
+
 Backend: Node.js, Express.js
+
 Database: MySQL
+
 Authentication: JSON Web Tokens (JWT)
+
 Styling: SCSS
+
 Contributing
+
 We welcome contributions! Please follow these steps to contribute:
 
 Fork the repository.
+
 Create a new branch (git checkout -b feature/your-feature).
+
 Make your changes.
+
 Commit your changes (git commit -m 'Add new feature').
+
 Push to the branch (git push origin feature/your-feature).
+
 Open a pull request.
+
 License
 This project is licensed under the MIT License. See the LICENSE file for more information.
 
@@ -150,5 +162,6 @@ Contact
 For any questions or inquiries, feel free to reach out:
 
 Email: sundayfavour997@gmail.com
+
 GitHub: Sunday012
  
