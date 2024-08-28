@@ -89,7 +89,7 @@ app.get("/tasks", authenticateToken, async (req, res) => {
   }
 });
 
-app.get('/projects:id', authenticateToken, async (req, res) => {
+app.get('/projects/:id', authenticateToken, async (req, res) => {
   const {id} = req.params;
   try {
     const [result] = await pool.query("SELECT * FROM projects WHERE id = ?", [id]);
