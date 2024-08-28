@@ -113,7 +113,7 @@ app.get('/tasks/:id', authenticateToken, async (req, res) => {
   }
 });
 
-app.get('/projects', authenticateToken, async (req, res) => {
+app.get('/projects/filter', authenticateToken, async (req, res) => {
   const { name, dueDate, numTasks } = req.query;
 
   try {
