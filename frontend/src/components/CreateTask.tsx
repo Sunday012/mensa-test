@@ -11,9 +11,7 @@ export const CreateTask= () => {
         id,        
       };
     console.log('Form values:', data);
-    // We'll implement the API call to create a project here later
     createTask({data})
-    // After successful API call, reset the form
     form.resetFields();
   };
   return (

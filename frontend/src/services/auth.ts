@@ -24,6 +24,8 @@ export const SignUser = async ({values} : User) => {
         return response.data;
     } catch (error) {
         console.error(error);
+    } finally {
+        window.location.href = '/login'
     }
 }
 
@@ -44,5 +46,7 @@ export const LoginUser = async ({ values }: User) => {
     } catch (error : any) {
         console.error("Login error:", error.response ? error.response.data : error.message);
         return { error: error.response ? error.response.data : "An unexpected error occurred" };
+    } finally{
+     window.location.href = '/'
     }
 };

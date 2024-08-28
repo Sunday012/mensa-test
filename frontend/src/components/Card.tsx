@@ -1,8 +1,8 @@
-import { Avatar, Card } from 'antd';
-import Meta from 'antd/es/card/Meta';
-import { DeleteProject } from './DeleteBtn';
-import { EditBtn } from './EditBtn';
-import { Link } from 'react-router-dom';
+import { Avatar, Card } from "antd";
+import Meta from "antd/es/card/Meta";
+import { DeleteProject } from "./DeleteBtn";
+import { EditBtn } from "./EditBtn";
+import { Link } from "react-router-dom";
 
 interface Project {
   id: number;
@@ -16,13 +16,17 @@ interface ProjectListProps {
 }
 
 export const CardPre = ({ project }: ProjectListProps) => (
-  <Link to={`/project/${project.id}`} style={{ textDecoration: 'none' }}>
+  <Link to={`/project/${project.id}`} style={{ textDecoration: "none" }}>
     <Card
       style={{ width: 300 }}
       cover={
         <img
           alt="example"
-          src={project.status ? "/task.jpg" : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"}
+          src={
+            project.status
+              ? "/task.jpg"
+              : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+          }
         />
       }
       actions={[
@@ -38,7 +42,9 @@ export const CardPre = ({ project }: ProjectListProps) => (
       ]}
     >
       <Meta
-        avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />}
+        avatar={
+          <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
+        }
         title={project.name}
         description={project.description}
       />

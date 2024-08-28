@@ -105,6 +105,8 @@ export const createProject = async ({values} : Project) => {
         return response.data;
     } catch (error) {
         console.error({"Error fetching projects" : error});
+    } finally {
+     window.location.href = `/project/${values.id}`
     }
 }
 
@@ -124,6 +126,8 @@ export const createTask = async ({data} : any) => {
         return response.data;
     } catch (error) {
         console.error({"Error creating Task" : error});
+    } finally {
+        window.location.reload();
     }
 }
 
@@ -142,9 +146,13 @@ export const updateProject = async ({values} : Project) => {
             }
         });
         return response.data;
+
     } catch (error) {
         console.error({"Error fetching projects" : error});
+    } finally {
+      window.location.reload();
     }
+
 }
 export const updateTask = async ({values} : Task) => {
     try {
@@ -161,6 +169,8 @@ export const updateTask = async ({values} : Task) => {
         return response.data;
     } catch (error) {
         console.error({"Error updating task" : error});
+    } finally {
+     window.location.reload();
     }
 }
 
@@ -178,6 +188,8 @@ export const deleteProject = async (id : number) => {
         return response.data;
     } catch (error) {
         console.error({"Error fetching projects" : error});
+    } finally {
+     window.location.reload();
     }
 }
 export const deleteTask = async (id : number) => {
@@ -194,6 +206,8 @@ export const deleteTask = async (id : number) => {
         return response.data;
     } catch (error) {
         console.error({"Error fetching projects" : error});
+    } finally {
+       window.location.reload();
     }
 }
 
