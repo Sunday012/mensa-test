@@ -8,7 +8,7 @@ type TypedueDate = {
     $d: string
 }
 export interface ProjectDetails {
-    id?: number;
+    id: number;
     name: string;
     description: string;
     dueDate: TypedueDate;
@@ -211,34 +211,40 @@ export const deleteTask = async (id : number) => {
     }
 }
 
-export const filterProjects = async (filters : any) => {
+export const filterProjects = async (filters: any) => {
     try {
-        const token = Cookies.get('token');
-        if (!token) {
-          throw new Error('No token found');
-        }
-         const queryParams = new URLSearchParams();
-    
-        if (filters.name) {
-          queryParams.append('name', filters.name);
-        }
-        if (filters.dueDate) {
-          queryParams.append('dueDate', filters.dueDate);
-        }
-        if (filters.numTasks !== undefined) {
-          queryParams.append('numTasks', filters.numTasks.toString());
-        }
-    
-        const response = await axios.get(`${apiUrl}/projects`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: queryParams,
-        });
-    
-        return response.data;
-      } catch (error) {
-        console.error("Error filtering projects:", error);
-        throw error;
+      const token = Cookies.get('token');
+      console.log("Token:", token); 
+      if (!token) {
+        throw new Error('No token found');
       }
-}
+  
+      let queryParams = [];
+  
+      if (filters.values.name) {
+        queryParams.push(`name=${filters.values.name}`);
+      }
+      if (filters.values.dueDate) {
+        queryParams.push(`dueDate=${filters.values.dueDate}`);
+      }
+      if (filters.values.numTasks !== undefined) {
+        queryParams.push(`numTasks=${filters.values.numTasks}`);
+      }
+  
+      const queryString = queryParams.join('&');
+      const requestUrl = `${apiUrl}/project/filter?${queryString}`;
+  
+      console.log(requestUrl);
+  
+      const response = await axios.get(requestUrl, {
+        headers: {
+          authorization: token
+        },
+      });
+  
+      return response.data;
+    } catch (error) {
+      console.error("Error filtering projects:", error);
+    }
+  }
+  
